@@ -23,14 +23,27 @@ const obtenerStore = (localidad)=>{
     }
 }
 
-const obtenerDatosLlamada = (localidad, fecha)=>{
-    const datosLlamada = new Map();
-    datosLlamada.set('instanceCode', INSTANT_CODE);
-    datosLlamada.set('service',obtenerService(localidad));
-    datosLlamada.set('firstCall','false');
-    datosLlamada.set('store',obtenerStore(localidad));
-    datosLlamada.set('date',fecha);
-    return datosLlamada;
+/**
+ * Esto es una lista de objetos, cada objeto map, tiene los datos necesarios
+ * "form" que se pasan a axios
+ * @param {*} localidad 
+ * @param {*} fechas 
+ * @returns 
+ */
+const obtenerDatosLlamada = (localidad, fechas)=>{
+    let datosLlamadaLista = [];
+
+    fechas.forEach((fecha)=>{
+        const datosLlamada = new Map();
+        datosLlamada.set('instanceCode', INSTANT_CODE);
+        datosLlamada.set('service',obtenerService(localidad));
+        datosLlamada.set('firstCall','false');
+        datosLlamada.set('store',obtenerStore(localidad));
+        datosLlamada.set('date',fecha);
+        datosLlamadaLista.push(datosLlamada);
+    })
+    
+    return datosLlamadaLista;
 }
 
 
@@ -57,7 +70,11 @@ const axiosCall = async (datosLlamada) =>{
 }
 
 export const realizarLlamadaAxios = async (localidad)=>{
-    const fechaFormateada = obtenerFechaFormateada();
-    const datosLlamada = obtenerDatosLlamada(localidad, fechaFormateada);
-    return await axiosCall(datosLlamada);
+    const fechaMesesSiguientesFormateada = obtenerFechaFormateada();
+    const datosLlamada = obtenerDatosLlamada(localidad, fechaMesesSiguientesFormateada);
+    const respuesta = []
+    respuesta.push (await axiosCall(datosLlamada[0]));
+    respuesta.push (await axiosCall(datosLlamada[1]));
+    respuesta.push (await axiosCall(datosLlamada[2]));
+    return respuesta;
 }
