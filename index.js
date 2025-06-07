@@ -20,29 +20,32 @@ const mostrarTodo = (respuesta)=>{
     console.log(respuesta[2].data.get_open_days)
 }
 
-const mostarDatosLocalidad= async (localidad) =>{
-    const respuesta = await realizarLlamadaAxios(localidad);
-    const hoy = new Date()
-    //mostrarTodo(respuesta);
-    console.log('------------------------------')
-    console.log(`Dias con fechas disponibles ${localidad.toUpperCase()}:`)
-    console.log(`${stringMes(hoy.getMonth())}`)
-    let listaDias = obtenerDiasFechas(respuesta[0].data.get_open_days);
-    console.log(listaDias);
-
-    console.log(`\n${stringMes(hoy.getMonth()+1)}`)
-    listaDias = obtenerDiasFechas(respuesta[1].data.get_open_days);
-    console.log(listaDias);
-
-    console.log(`\n${stringMes(hoy.getMonth()+2)}`)
-    listaDias = obtenerDiasFechas(respuesta[2].data.get_open_days);
-    console.log(listaDias);
+const mostarDatosLocalidadLoop= async (localidades) =>{
+    for await (let item of localidades){
+        const respuesta = await realizarLlamadaAxios(item);
+        const hoy = new Date()
+        //mostrarTodo(respuesta);
+        console.log('------------------------------')
+        console.log(`Dias con fechas disponibles ${item.toUpperCase()}:`)
+        console.log(`${stringMes(hoy.getMonth())}`)
+        let listaDias = obtenerDiasFechas(respuesta[0].data.get_open_days);
+        console.log(listaDias);
+    
+        console.log(`\n${stringMes(hoy.getMonth()+1)}`)
+        listaDias = obtenerDiasFechas(respuesta[1].data.get_open_days);
+        console.log(listaDias);
+    
+        console.log(`\n${stringMes(hoy.getMonth()+2)}`)
+        listaDias = obtenerDiasFechas(respuesta[2].data.get_open_days);
+        console.log(listaDias);
+    }
 }
 
 const main = async () =>{
     console.log("Inicio programa")
-    await mostarDatosLocalidad(TORREVIEJA);
-    await mostarDatosLocalidad(ONDARA);
+    const localidades = [TORREVIEJA, ONDARA]
+    //Loop con await. El for of funciona el await
+    await mostarDatosLocalidadLoop(localidades);
 
     console.log("Fin programa")
 }
