@@ -1,26 +1,14 @@
-import { INSTANT_CODE, LOCALIDADES, ONDARA, TORREVIEJA } from "../constantes.js";
+import { INSTANT_CODE, LOCALIDADES } from "../constantes.js";
 import { obtenerFechaFormateada } from "./funcionesFecha.js";
 import axios from "axios";
 import { BASE_URL,MONTH_DATA } from "../constantes.js";
 
-const obtenerService = (localidad)=>{
-    if(localidad==ONDARA){
-        return LOCALIDADES[ONDARA].service
-    }else if (localidad == TORREVIEJA){
-        return LOCALIDADES[TORREVIEJA].service
-    }else{
-        return 'Error Service'
-    }
+const obtenerService = (localidad) => {
+    return localidad && localidad.service ? localidad.service : 'Error Service';
 }
 
-const obtenerStore = (localidad)=>{
-    if(localidad==ONDARA){
-        return LOCALIDADES[ONDARA].store
-    }else if (localidad == TORREVIEJA){
-        return LOCALIDADES[TORREVIEJA].store
-    }else{
-        return 'Error Store'
-    }
+const obtenerStore = (loc) => {
+    return loc && loc.store ? loc.store : 'Error Store';
 }
 
 /**
@@ -42,7 +30,6 @@ const obtenerDatosLlamada = (localidad, fechas)=>{
         datosLlamada.set('date',fecha);
         datosLlamadaLista.push(datosLlamada);
     })
-    
     return datosLlamadaLista;
 }
 

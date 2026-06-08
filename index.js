@@ -1,4 +1,4 @@
-import { TORREVIEJA, ONDARA } from "./constantes.js"
+import { LOCALIDADES } from "./constantes.js"
 import { obtenerDia, stringMes } from "./funciones/funcionesFecha.js";
 import { realizarLlamadaAxios } from "./funciones/funcionesLlamada.js";
 
@@ -26,26 +26,28 @@ const mostarDatosLocalidadLoop= async (localidades) =>{
         const hoy = new Date()
         //mostrarTodo(respuesta);
         console.log('------------------------------')
-        console.log(`Dias con fechas disponibles ${item.toUpperCase()}:`)
+        console.log(`Dias con fechas disponibles ${item.localidad.toUpperCase()}:`)
+        //Mes actual
         console.log(`${stringMes(hoy.getMonth())}`)
         let listaDias = obtenerDiasFechas(respuesta[0].data.get_open_days);
         console.log(listaDias);
     
-        console.log(`\n${stringMes(hoy.getMonth()+1)}`)
-        listaDias = obtenerDiasFechas(respuesta[1].data.get_open_days);
-        console.log(listaDias);
+        //Mes siguiente
+        //console.log(`\n${stringMes(hoy.getMonth()+1)}`)
+        //listaDias = obtenerDiasFechas(respuesta[1].data.get_open_days);
+        //console.log(listaDias);
     
-        console.log(`\n${stringMes(hoy.getMonth()+2)}`)
-        listaDias = obtenerDiasFechas(respuesta[2].data.get_open_days);
-        console.log(listaDias);
+        //Dos meses futuro
+        //console.log(`\n${stringMes(hoy.getMonth()+2)}`)
+        //listaDias = obtenerDiasFechas(respuesta[2].data.get_open_days);
+        //console.log(listaDias);
     }
 }
 
 const main = async () =>{
     console.log("Inicio programa")
-    const localidades = [TORREVIEJA, ONDARA]
     //Loop con await. El for of funciona el await
-    await mostarDatosLocalidadLoop(localidades);
+    await mostarDatosLocalidadLoop(LOCALIDADES);
 
     console.log("Fin programa")
 }
